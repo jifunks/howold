@@ -8,8 +8,8 @@ const loadActorList = (nameQueryString) => {
   return movieDbInstance
     .searchPerson({ query: nameQueryString })
     .then((res) => {
-      console.log("%%%R EXECUTING QUERY");
       Actor.list = res.results;
+      console.log(Actor.list);
       m.redraw();
     })
     .catch(console.error);
