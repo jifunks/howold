@@ -40,6 +40,8 @@ var Main = {
           );
         })
       ),
+      m("hr"),
+      m(".actor-info", JSON.stringify(Actor.current)),
     ]);
   },
 };
