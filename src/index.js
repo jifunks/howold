@@ -41,7 +41,17 @@ var Main = {
         })
       ),
       m("hr"),
-      m(".actor-info", JSON.stringify(Actor.current)),
+      m(".actor-info", JSON.stringify(Actor.current.bio)),
+      m("hr"),
+      m(
+        ".actor-credits",
+        Actor.current?.credits?.map((credit) => {
+          return m(".actor-credit", [
+            m("span#credit", `${credit.title} (${credit.year}) - `),
+            m("span#age", `${credit.age}`),
+          ]);
+        })
+      ),
     ]);
   },
 };

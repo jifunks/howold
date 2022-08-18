@@ -8,7 +8,7 @@ const loadActorList = (nameQueryString) => {
   return movieDbInstance
     .searchPerson({ query: nameQueryString })
     .then((res) => {
-      Actor.list = res.results;
+      Actor.list = _.orderBy(res.results, "popularity", "desc");
       console.log(Actor.list);
       m.redraw();
     })
@@ -22,14 +22,41 @@ const Actor = {
     return debouncedGetActor(nameQueryString);
   },
 
-  current: { name: "Jeff Bridges", birthday: "Jan 1 1980" },
+  current: {},
   load: (id) => {
-    console.log(`loading id: ${id}`);
-    return movieDbInstance.personInfo({ id }).then((res) => {
-      console.log("ACTOR INFO", res);
-      Actor.current = res;
+    movieDbInstance.personInfo({ id }).then((res) => {
+      Actor.current.bio = res;
+    });
+    return movieDbInstance.personMovieCredits({ id }).then((res) => {
+      const ages = moviesAndAges(res.cast, Actor.current.bio.birthday);
+      Actor.current.credits = ages;
     });
   },
 };
 
+const moviesAndAges = (movieCredits, actorBirthday) => {
+  const moviesAndAges = [];
+  for (let credit of movieCredits) {
+    const ageDiff = calculateAge(actorBirthday, credit.release_date);
+    moviesAndAges.push({
+      id: credit.id,
+      title: credit.title,
+      year: credit.release_date?.split("-")[0],
+      age: ageDiff,
+    });
+  }
+  const sortedByAge = _.sortBy(moviesAndAges, "age");
+  console.log("UPDATED AGES");
+  m.redraw();
+  return sortedByAge;
+};
+
+function calculateAge(birthday, movieRelease) {
+  // birthday is a date
+  const bdayAsDate = new Date(birthday);
+  const creditAsDate = new Date(movieRelease);
+  var ageDifMs = creditAsDate - bdayAsDate;
+  var ageDate = new Date(ageDifMs); // miliseconds from epoch
+  return Math.abs(ageDate.getUTCFullYear() - 1970);
+}
 export default Actor;
