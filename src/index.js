@@ -33,20 +33,30 @@ var Main = {
         "How Old?"
       ),
 
-      m("input", {
-        placeholder: "Actor name...",
-        oninput: (e) => {
-          const actorNameQuery = e.target.value;
-          // debouncedGetActor(actorNameQuery);
-          // need to have actorlist call a seach
-          Actor.loadActorList(actorNameQuery);
+      // m("input", {
+      //   placeholder: "Actor name...",
+      //   oninput: (e) => {
+      //     const actorNameQuery = e.target.value;
+      //     // debouncedGetActor(actorNameQuery);
+      //     // need to have actorlist call a seach
+      //     Actor.loadActorList(actorNameQuery);
+      //   },
+      // }),
+      m(
+        "form",
+        {
+          onsubmit: function (e) {
+            e.preventDefault();
+            console.log(e);
+            Actor.loadActorList("tom holland");
+          },
         },
-      }),
-      m("form", [
-        m("label.label", "actor name"),
-        m("input.input[type=text][placeholder=actor name]"),
-        m("button.button[type=submit]", "Save"),
-      ]),
+        [
+          m("label.label", "actor name"),
+          m("input.input[type=text][placeholder=actor name]"),
+          m("button.button[type=submit]", "Save"),
+        ]
+      ),
       m("p", JSON.stringify(actorData)),
       m(
         ".actor-list",

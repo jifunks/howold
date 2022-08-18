@@ -7,7 +7,7 @@ const Actor = {
   list: [],
   loadActorList: (nameQueryString) => {
     return movieDbInstance
-      .searchPerson({ query: "tom cruise" })
+      .searchPerson({ query: nameQueryString })
       .then((res) => {
         console.log("%%%R EXECUTING QUERY");
         Actor.list = res.results;
