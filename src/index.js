@@ -1,5 +1,4 @@
 import m from "mithril";
-import _ from "lodash";
 import { MovieDb } from "moviedb-promise";
 import ActorList from "./views/ActorList";
 import Actor from "./models/Actor";
@@ -20,7 +19,6 @@ var getActor = (actorName) => {
     })
     .catch(console.error);
 };
-const debouncedGetActor = _.debounce(getActor, 1000);
 
 var Main = {
   view: () => {
@@ -33,30 +31,16 @@ var Main = {
         "How Old?"
       ),
 
-      // m("input", {
-      //   placeholder: "Actor name...",
-      //   oninput: (e) => {
-      //     const actorNameQuery = e.target.value;
-      //     // debouncedGetActor(actorNameQuery);
-      //     // need to have actorlist call a seach
-      //     Actor.loadActorList(actorNameQuery);
-      //   },
-      // }),
-      m(
-        "form",
-        {
-          onsubmit: function (e) {
-            e.preventDefault();
-            console.log(e);
-            Actor.loadActorList("tom holland");
-          },
+      m("input", {
+        placeholder: "Actor name...",
+        oninput: (e) => {
+          const actorNameQuery = e.target.value;
+          // debouncedGetActor(actorNameQuery);
+          // need to have actorlist call a seach
+          Actor.loadActorList(actorNameQuery);
         },
-        [
-          m("label.label", "actor name"),
-          m("input.input[type=text][placeholder=actor name]"),
-          m("button.button[type=submit]", "Save"),
-        ]
-      ),
+      }),
+
       m("p", JSON.stringify(actorData)),
       m(
         ".actor-list",
