@@ -24,6 +24,7 @@ const Actor = {
 
   current: { name: "Jeff Bridges", birthday: "Jan 1 1980" },
   load: (id) => {
+    console.log(`loading id: ${id}`);
     return movieDbInstance.personInfo({ id }).then((res) => {
       console.log("ACTOR INFO", res);
       Actor.current = res;

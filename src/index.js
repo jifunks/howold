@@ -31,7 +31,7 @@ var Main = {
             {
               id: actor.id,
               onclick: () => {
-                console.log("clicked");
+                Actor.load(actor.id);
               },
             },
             `${actor.name}, (${actor.known_for[0]?.title ?? "unknown"} (${
